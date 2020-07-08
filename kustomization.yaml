@@ -7,3 +7,4 @@ configMapGenerator:
 - files:
   - nginx.conf
   name: root-ui-nginx-configmap
+  behavior: replace
