@@ -15,9 +15,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui-root
+  name: ui-root-deployment
   labels:
     app: ui-root
+    version: COMMIT_SHA
 spec:
   replicas: 1
   selector:
@@ -27,22 +28,28 @@ spec:
     metadata:
       labels:
         app: ui-root
+        version: COMMIT_SHA
     spec:
       containers:
         - name: ui-root
           image: gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
           ports:
-            - containerPort: 8080
+            - name: nginx-http
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: ui-root
 spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: nginx-http
+      protocol: TCP
   selector:
     app: ui-root
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
+  type: NodePort
