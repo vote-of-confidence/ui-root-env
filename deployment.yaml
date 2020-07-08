@@ -19,9 +19,23 @@ spec:
       containers:
         - name: ui-root
           image: eu.gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
+          volumeMounts:
+          - mountPath: /etc/nginx # mount nginx-conf volumn to /etc/nginx
+            readOnly: true
+            name: root-ui-nginx-configmap
+          - mountPath: /var/log/nginx
+            name: log          
           ports:
             - name: nginx-http
               containerPort: 8080
           resources:
             requests:
               cpu: 50m
+      volumes:
+      - name: root-ui-nginx-configmap
+        configMap:
+          name: root-ui-nginx-configmap # place ConfigMap `nginx-conf` on /etc/nginx
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+        
