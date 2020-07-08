@@ -18,7 +18,7 @@ metadata:
   name: ui-root-deployment
   labels:
     app: ui-root
-    version: aa697fa
+    version: 69f5fed
 spec:
   replicas: 1
   selector:
@@ -28,11 +28,11 @@ spec:
     metadata:
       labels:
         app: ui-root
-        version: aa697fa
+        version: 69f5fed
     spec:
       containers:
         - name: ui-root
-          image: gcr.io/vote-of-confidence-233210/voc-ui-root:aa697fa
+          image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:69f5fed
           ports:
             - name: nginx-http
               containerPort: 8080
