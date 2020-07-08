@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: ui-root
-          image: gcr.io/vote-of-confidence-233210/ui-root:0326891
+          image: gcr.io/vote-of-confidence-233210/ui-root:9519469
           ports:
             - containerPort: 8080
 ---
