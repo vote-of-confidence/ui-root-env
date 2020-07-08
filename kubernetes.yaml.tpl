@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: ui-root
-          image: gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
+          image: eu.gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
           ports:
             - name: nginx-http
               containerPort: 8080
