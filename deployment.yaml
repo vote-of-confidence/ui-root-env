@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-root-deployment
+  labels:
+    app: ui-root
+    version: COMMIT_SHA
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui-root
+  template:
+    metadata:
+      labels:
+        app: ui-root
+        version: COMMIT_SHA
+    spec:
+      containers:
+        - name: ui-root
+          image: eu.gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
+          ports:
+            - name: nginx-http
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m

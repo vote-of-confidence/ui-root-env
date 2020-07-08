@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-root
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: nginx-http
+      protocol: TCP
+  selector:
+    app: ui-root
+  type: NodePort
