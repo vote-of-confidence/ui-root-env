@@ -82,7 +82,7 @@ steps:
         git checkout $COMMIT_SHA kubernetes.yaml && \
         # Commit the kubernetes.yaml file with a descriptive commit message
         git commit -m "Manifest from commit $COMMIT_SHA
-        $(git log --format=%B -n 1 $COMMIT_SHA)" && \
+        $(git log --format=%B -n 1 $COMMIT_SHA)"
 
   - name: 'gcr.io/cloud-builders/git'
     dir: /workspace/persistent_volume/ui-root-env
