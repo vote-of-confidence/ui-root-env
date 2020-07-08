@@ -75,6 +75,8 @@ steps:
       - |
         cd /workspace/persistent_volume/ui-root-env && \
         set -x && \
+        pwd && \
+        ls -a && \
         # Configure Git to create commits with Cloud Build's service account
         git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
         # Switch to the production branch and copy the kubernetes.yaml file from the candidate branch
