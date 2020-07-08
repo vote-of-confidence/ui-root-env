@@ -54,7 +54,7 @@ kind: Deployment
 metadata:
   labels:
     app: ui-root
-    version: f81cf29
+    version: ab8d00d
   name: ui-root-deployment
 spec:
   replicas: 1
@@ -65,10 +65,10 @@ spec:
     metadata:
       labels:
         app: ui-root
-        version: f81cf29
+        version: ab8d00d
     spec:
       containers:
-      - image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:f81cf29
+      - image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:ab8d00d
         name: ui-root
         ports:
         - containerPort: 8080
