@@ -67,7 +67,10 @@ steps:
   - name: 'gcr.io/cloud-builders/git'
     id: Copy to production branch
     entrypoint: /bin/sh
+    env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
     volumes:
+      - name: 'ssh'
+        path: /root/.ssh
       - name: 'vol1'
         path: '/workspace/persistent_volume'
     args:
