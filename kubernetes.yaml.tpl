@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: ui-root
-          image: gcr.io/GOOGLE_CLOUD_PROJECT/ui-root:COMMIT_SHA
+          image: gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
           ports:
             - containerPort: 8080
 ---
