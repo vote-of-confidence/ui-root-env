@@ -26,15 +26,54 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=europe-north1-c'
       - 'CLOUDSDK_CONTAINER_CLUSTER=voc-cluster-1'
 
+
+  # Access the id_github file from Secret Manager
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args: [ '-c', 'gcloud secrets versions access latest --secret=voc-github > /root/.ssh/id_github' ]
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  # Set up git with key and domain
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        chmod 600 /root/.ssh/id_github
+        cat <<EOF >/root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/id_github
+        EOF
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  # Connect to the repository
+  - name: 'gcr.io/cloud-builders/git'
+    dir: persistent_volume
+    args:
+      - clone
+      - git@github.com:vote-of-confidence/ui-root-env.git
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+      - name: 'vol1'
+        path: '/workspace/persistent_volume'
+
   # This step copies the applied manifest to the production branch
   # The COMMIT_SHA variable is automatically
   # replaced by Cloud Build.
   - name: 'gcr.io/cloud-builders/git'
     id: Copy to production branch
     entrypoint: /bin/sh
+    volumes:
+      - name: 'vol1'
+        path: '/workspace/persistent_volume'
     args:
       - '-c'
       - |
+        cd /workspace/persistent_volume/ui-root-env && \
         set -x && \
         # Configure Git to create commits with Cloud Build's service account
         git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
@@ -44,6 +83,18 @@ steps:
         # Commit the kubernetes.yaml file with a descriptive commit message
         git commit -m "Manifest from commit $COMMIT_SHA
         $(git log --format=%B -n 1 $COMMIT_SHA)" && \
-        # Push the changes back to Cloud Source Repository
-        git push origin production
+
+  - name: 'gcr.io/cloud-builders/git'
+    dir: /workspace/persistent_volume/ui-root-env
+    env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
+    args:
+      - push
+      - origin
+      - production
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+      - name: 'vol1'
+        path: '/workspace/persistent_volume'
 # [END cloudbuild-delivery]
+timeout: '1800s'
