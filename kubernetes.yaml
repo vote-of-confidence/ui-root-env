@@ -54,7 +54,7 @@ kind: Deployment
 metadata:
   labels:
     app: ui-root
-    version: ab8d00d
+    version: 4b8161b
   name: ui-root-deployment
 spec:
   replicas: 1
@@ -65,10 +65,10 @@ spec:
     metadata:
       labels:
         app: ui-root
-        version: ab8d00d
+        version: 4b8161b
     spec:
       containers:
-      - image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:ab8d00d
+      - image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:4b8161b
         name: ui-root
         ports:
         - containerPort: 8080
@@ -76,3 +76,10 @@ spec:
         resources:
           requests:
             cpu: 50m
+        volumeMounts:
+        - mountPath: /etc/nginx
+          name: config-volume
+      volumes:
+      - configMap:
+          name: root-ui-nginx-configmap-57tgccdd86
+        name: config-volume
