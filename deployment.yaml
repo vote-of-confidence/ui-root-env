@@ -19,6 +19,9 @@ spec:
       containers:
         - name: ui-root
           image: eu.gcr.io/GOOGLE_CLOUD_PROJECT/voc-ui-root:COMMIT_SHA
+          envFrom:
+            - configMapRef:
+                name: root-ui-nginx-configmap
           ports:
             - name: nginx-http
               containerPort: 8080
@@ -26,10 +29,15 @@ spec:
             requests:
               cpu: 50m
           volumeMounts:
-            - name: config-volume
-              mountPath: /etc/nginx
+            - mountPath: /etc/nginx/nginx.conf
+              name: config-volume
+              readOnly: true
               subPath: nginx.conf
       volumes:
-        - name: config-volume
-          configMap:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: nginx.conf
+                path: nginx.conf
             name: root-ui-nginx-configmap
+          name: config-volume
