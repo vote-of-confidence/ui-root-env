@@ -54,7 +54,7 @@ kind: Deployment
 metadata:
   labels:
     app: ui-root
-    version: aab4acc
+    version: 14e00fa
   name: ui-root-deployment
 spec:
   replicas: 1
@@ -65,13 +65,13 @@ spec:
     metadata:
       labels:
         app: ui-root
-        version: aab4acc
+        version: 14e00fa
     spec:
       containers:
       - envFrom:
         - configMapRef:
             name: root-ui-nginx-configmap-57tgccdd86
-        image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:aab4acc
+        image: eu.gcr.io/vote-of-confidence-233210/voc-ui-root:14e00fa
         name: ui-root
         ports:
         - containerPort: 8080
